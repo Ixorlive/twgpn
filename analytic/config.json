@@ -1,0 +1,13 @@
+{
+    "influx": {
+        "token": "lJnFiVBUALphPGQQZBoRuAcZch9sZS6du77d8gvEfZAoZ2mbE7ZCeSuz7pX8jVXK_fGLLqBn_puIKmsrNKeqkg==",
+        "org": "org",
+        "url": "http://localhost:8086"
+    },
+    "postgres": {
+        "dbname": "devices_db",
+        "user": "postgres",
+        "password": "example",
+        "host": "localhost"
+    }
+}

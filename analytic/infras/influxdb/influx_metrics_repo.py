@@ -1,4 +1,4 @@
-import os
+import json
 from typing import List
 
 from influxdb_client import InfluxDBClient
@@ -8,12 +8,14 @@ from infras.metrics_repo import MetricsRepo
 
 class InfluxdbMetricsRepo(MetricsRepo):
     def __init__(self) -> None:
-        # token = os.environ.get("INFLUXDB_TOKEN")
-        token = "XRqC1GLYuoeOl0moz4ytOJVqpZGQxp3Yx5s8PrPgMxbRxYbUafkLSCh85SFMohHFHrYO7YIjDXbkSTtnJIsTkA=="
-        org = "org"
-        url = "http://localhost:8086"
+        with open("config.json") as f:
+            config = json.load(f)
 
-        self.write_client = InfluxDBClient(url=url, token=token, org=org)
+        self.write_client = InfluxDBClient(
+            url=config["influx"]["url"],
+            token=config["influx"]["token"],
+            org=config["influx"]["org"],
+        )
         self.query_api = self.write_client.query_api()
 
     def get_device_metrics(

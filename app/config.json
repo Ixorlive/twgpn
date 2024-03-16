@@ -1,0 +1,8 @@
+{
+    "postgres": {
+        "dbname": "devices_db",
+        "user": "postgres",
+        "password": "example",
+        "host": "localhost"
+    }
+}

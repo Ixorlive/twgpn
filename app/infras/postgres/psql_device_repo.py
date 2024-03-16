@@ -1,3 +1,4 @@
+import json
 from contextlib import closing
 
 import psycopg2
@@ -9,9 +10,14 @@ from infras.device_repo import DeviceRepo
 
 class PsqlDevicesRepo(DeviceRepo):
     def __init__(self):
-        super().__init__()
+        with open("config.json") as f:
+            config = json.load(f)
+
         self.conn = psycopg2.connect(
-            dbname="devices_db", user="postgres", password="example", host="localhost"
+            dbname=config["postgres"]["dbname"],
+            user=config["postgres"]["user"],
+            password=config["postgres"]["password"],
+            host=config["postgres"]["host"],
         )
 
     def add_user(self, user: User):
