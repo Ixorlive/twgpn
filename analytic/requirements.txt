@@ -1,0 +1,8 @@
+black
+fastapi
+pre-commit
+pytest
+uvicorn
+celery
+influxdb-client
+psycopg2-binary

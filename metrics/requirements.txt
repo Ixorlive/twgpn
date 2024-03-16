@@ -1,0 +1,6 @@
+black
+fastapi
+pre-commit
+pytest
+uvicorn
+influxdb-client
