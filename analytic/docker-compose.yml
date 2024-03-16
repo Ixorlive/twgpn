@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  fastapi:
+    build: .
+    ports:
+      - "8000:8003"
+    volumes:
+      - .:/code
+    command: uvicorn app:app --host 0.0.0.0 --port 8000 --reload
+
+  celery_worker:
+    build: .
+    volumes:
+      - .:/code
+    command: celery -A analysis_worker worker --loglevel=INFO --queues=dev_metrics,user_all,user_foreach
