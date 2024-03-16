@@ -20,6 +20,8 @@ class DeviceDataAnalyzer:
         return self.metrics_repo.get_device_metrics(devices, start_time, stop_time)
 
     def _calculate_stats(self, vals: List[float]) -> DeviceStats:
+        if not vals:
+            return DeviceStats(0, 0, 0, 0, 0)
         return DeviceStats(
             min(vals), max(vals), len(vals), sum(vals), statistics.median(vals)
         )
@@ -52,9 +54,10 @@ class DeviceDataAnalyzer:
             raise ValueError(f"User with id ${user_id} not found")
         devices_metrics = self._get_device_metrics(user_devices, start_time, stop_time)
         metrics_all = [
-            metric[metric_key]
-            for dev_metrics in devices_metrics
-            for metric in dev_metrics
+            metrics[metric_key]
+            for dev_metrics in devices_metrics.values()
+            for metrics in dev_metrics
+            if metrics and metric_key in metrics
         ]
         return self._calculate_stats(metrics_all)
 
@@ -69,8 +72,12 @@ class DeviceDataAnalyzer:
         if user_devices is None:
             raise ValueError(f"User with id ${user_id} not found")
         devices_metrics = self._get_device_metrics(user_devices, start_time, stop_time)
-        return {
-            device_id: self._calculate_stats(metric[metric_key])
-            for device_id, dev_metrics in devices_metrics.items()
-            for metric in dev_metrics
-        }
+        result = {}
+
+        for device_id, dev_metrics in devices_metrics.items():
+            metric_values = [
+                metric[metric_key] for metric in dev_metrics if metric_key in metric
+            ]
+
+            result[device_id] = self._calculate_stats(metric_values)
+        return result

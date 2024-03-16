@@ -14,6 +14,7 @@ class PsqlDevicesRepo(DeviceRepo):
 
     def get_devices_by_user(self, user_id):
         with closing(self.conn.cursor()) as cur:
-            cur.execute("SELECT id FROM devices WHERE user_id=(user_id);", (user_id))
+            cur.execute("SELECT id FROM devices WHERE user_id=%s;", (user_id,))
             devices = cur.fetchall()
-            return devices
+            device_ids = [device[0] for device in devices]
+            return device_ids

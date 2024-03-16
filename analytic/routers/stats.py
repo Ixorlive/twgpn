@@ -99,5 +99,7 @@ async def get_stats_by_user(
     return (
         _dict_stats_to_statresponce(stats)
         if user.aggregate
-        else {device: _dict_stats_to_statresponce(stat) for device, stat in stats}
+        else {
+            device: _dict_stats_to_statresponce(stat) for device, stat in stats.items()
+        }
     )

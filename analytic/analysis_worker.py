@@ -19,7 +19,6 @@ device_data_analyzer = DeviceDataAnalyzer(metrics_repo, devices_repo)
 def dev_metrics_by_device_id(
     device_id: int, metric_key: str, start_time: str, stop_time: str
 ) -> Dict:
-    print(device_id, start_time, stop_time, metric_key)
     stats = device_data_analyzer.get_device_stats(
         device_id, metric_key, start_time, stop_time
     )

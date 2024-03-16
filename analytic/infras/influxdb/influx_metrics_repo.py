@@ -8,7 +8,8 @@ from infras.metrics_repo import MetricsRepo
 
 class InfluxdbMetricsRepo(MetricsRepo):
     def __init__(self) -> None:
-        token = os.environ.get("INFLUXDB_TOKEN")
+        # token = os.environ.get("INFLUXDB_TOKEN")
+        token = "XRqC1GLYuoeOl0moz4ytOJVqpZGQxp3Yx5s8PrPgMxbRxYbUafkLSCh85SFMohHFHrYO7YIjDXbkSTtnJIsTkA=="
         org = "org"
         url = "http://localhost:8086"
 
