@@ -2,7 +2,7 @@ from typing import Dict, Union
 
 from fastapi import APIRouter, Body, status
 
-from analysis_worker import *
+from celery_tasks.tasks import *
 from routers.models import DeviceStatsRequest, StatsResponse, UserStatsRequest
 
 stats_router = APIRouter()
