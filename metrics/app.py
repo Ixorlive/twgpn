@@ -1,5 +1,7 @@
+from typing import Dict
+
 from domain.device_metrics import DeviceMetrics
-from fastapi import FastAPI
+from fastapi import Body, FastAPI, Response, status
 from infra.influxdb.influx_metrics_repo import InfluxdbMetricsRepo
 from schemas.dev_metrics import DevMetrics
 
@@ -18,12 +20,30 @@ def read_root():
     }
 
 
-@app.post("/stats")
-def send_metrics(metrics: DevMetrics):
+@app.post(
+    "/stats",
+    response_model=Dict[str, str],
+    status_code=status.HTTP_202_ACCEPTED,
+    summary="Send device metrics",
+    description="This endpoint updates the device metrics in the database (e.g., InfluxDB). \
+        You need to provide the device metrics model, including device ID and metrics data.",
+)
+def send_metrics(
+    metrics: DevMetrics = Body(
+        ..., example={"device_id": "1", "x": 1.0, "y": 2.0, "z": 3.0}
+    )
+):
     """
-    Receiving statistics from various devices and adding them to queue to the message broker
+    Updates device metrics in the database.
+
+    - **device_id**: Unique identifier for the device.
+    - **x**: The x metric value for the device.
+    - **y**: The y metric value for the device.
+    - **z**: The z metric value for the device.
     """
     repo.update_metrics(
         DeviceMetrics(metrics.device_id, metrics.x, metrics.y, metrics.z)
     )
-    return {"message": "metrics updated"}
+    return Response(
+        content={"message": "Metrics updated"}, status_code=status.HTTP_202_ACCEPTED
+    )
